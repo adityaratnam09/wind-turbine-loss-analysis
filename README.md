@@ -246,8 +246,10 @@ the core outputs are:
 - `generation_vs_export_balance.png` - generation vs. EB export reading, by year
 - `yearly_generation_intensity.png` - kWh generated per run-hour, by year
 
+An example output figure: 
+
 <p align="center">
-  <img src="screenshots/monthly_hours_breakdown.png" alt="Monthly Hours Breakdown (an example output figure)" width="850">
+  <img src="screenshots/monthly_hours_breakdown.png" alt="Monthly Hours Breakdown" width="850">
 </p>
 
 ---
