@@ -562,16 +562,30 @@ def analysis_reliability(df, out_dir):
         events.to_csv(os.path.join(out_dir, f'reliability_events_{col.replace("_hrs","")}.csv'), index=False)
         if len(gaps) >= 5:
             fig, ax = plt.subplots(figsize=(8, 5))
-            ax.hist(gaps, bins=min(15, max(5, len(gaps) // 2)), density=True, alpha=0.6,
+            counts, _, _ = ax.hist(gaps, bins=min(15, max(5, len(gaps) // 2)), density=True, alpha=0.6,
                     color='#1f77b4', label='Observed inter-failure gaps')
             x = np.linspace(1e-6, gaps.max() * 1.1, 200)
-            ax.plot(x, stats.weibull_min.pdf(x, metrics['weibull_k'], 0, metrics['weibull_lambda_days']),
+            weibull_pdf = stats.weibull_min.pdf(x, metrics['weibull_k'], 0, metrics['weibull_lambda_days'])
+            ax.plot(x, weibull_pdf,
                     color='#d62728', linewidth=2,
                     label=f"Fitted Weibull (k={metrics['weibull_k']:.2f}, "
                           f"lambda={metrics['weibull_lambda_days']:.1f})")
             ax.set_xlabel('Days between failures')
             ax.set_ylabel('Density')
             ax.set_title(f'{label} inter-failure intervals (n={len(gaps)} gaps)')
+            # For a Weibull shape parameter below 1, the fitted density diverges
+            # near x=0 and would otherwise dwarf the histogram bars on a linear
+            # y-axis. Cap the y-axis to the readable range: the taller of the
+            # tallest histogram bar and the curve's height away from the origin
+            # (excluding the first 5% of the x-range, where the divergence lives),
+            # with headroom. The curve is still drawn in full; only the axis view
+            # is cropped, so a k<1 curve will run off the top of the plot near
+            # x=0, which is expected and informative rather than an error.
+            core = x > (x.max() * 0.05)
+            curve_ref = np.percentile(weibull_pdf[core], 99) if core.any() else weibull_pdf.max()
+            y_cap = max(counts.max() if len(counts) else 0, curve_ref) * 1.3
+            if y_cap > 0:
+                ax.set_ylim(0, y_cap)
             ax.legend()
             fig.tight_layout()
             fig.savefig(os.path.join(out_dir, f'reliability_weibull_{col.replace("_hrs","")}.png'), dpi=130)
