@@ -25,7 +25,8 @@ Maintenance, and Lull (low wind) - plus a free-text remarks field:
   8. Seasonal significance     - is the seasonal pattern statistically real
                                  (Kruskal-Wallis), not just a chart impression?
   9. Economic sensitivity      - what is each cause worth, using month-specific
-                                 generation rates and a tariff sweep?
+                                 generation rates and the site's confirmed tariff
+                                 (override with --tariff for other rates or a sweep)?
 
 Usage:
     python wind_turbine_loss_analysis.py [path/to/daily_log.xls]
@@ -119,7 +120,7 @@ SEASON_MAP = {12: 'Winter', 1: 'Winter', 2: 'Winter',
               10: 'Post-Monsoon', 11: 'Post-Monsoon'}
 SEASON_ORDER = ['Winter', 'Summer', 'Monsoon', 'Post-Monsoon']
 
-DEFAULT_TARIFFS = [3.0, 4.0, 5.0, 6.0]  # Rs/kWh - PLACEHOLDER, override with --tariff
+DEFAULT_TARIFFS = [3.39]  # Rs/kWh - site's confirmed TANGEDCO contracted tariff, override with --tariff
 N_BOOTSTRAP = 2000    # resamples for reliability confidence intervals
 N_MONTE_CARLO = 2000  # resamples for the KS test's Monte Carlo p-value correction
 RNG_SEED = 20260905    # fixed seed so bootstrap/Monte Carlo results are reproducible run to run
@@ -946,8 +947,10 @@ def build_arg_parser():
     )
     parser.add_argument(
         '--tariff', type=float, nargs='+', default=None, metavar='RS_PER_KWH',
-        help='Override the assumed tariff sweep for the economic sensitivity analysis '
-             f'(default: {DEFAULT_TARIFFS} Rs/kWh). Example: --tariff 4.5 5.5'
+        help='Override the tariff(s) used for the economic sensitivity analysis '
+             f'(default: {DEFAULT_TARIFFS} Rs/kWh, the site\'s confirmed contracted '
+             'tariff). Pass multiple values for a sensitivity sweep across rates. '
+             'Example: --tariff 4.5 5.5'
     )
     parser.add_argument(
         '--only', nargs='+', default=None, metavar='ANALYSIS',

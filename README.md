@@ -118,7 +118,9 @@ List the nine analyses without running them:
 python wind_turbine_loss_analysis.py --list
 ```
 
-Override the tariff sweep used in the economic sensitivity analysis:
+Override the tariff used in the economic sensitivity analysis (defaults to
+the site's confirmed contracted tariff of ₹3.39/kWh; pass multiple values
+for a sensitivity sweep across rates):
 
 ```bash
 python wind_turbine_loss_analysis.py --tariff 4.5 5.5
@@ -131,8 +133,7 @@ python wind_turbine_loss_analysis.py --help
 ```
 
 All outputs (`.csv` tables and `.png` charts) are written to `output/`,
-created automatically on first run. Tested end-to-end in a clean virtual
-environment built only from `requirements.txt`.
+created automatically on first run.
 
 ---
 
@@ -202,9 +203,9 @@ its own function in `wind_turbine_loss_analysis.py`:
    pattern in generation and lull hours is statistically real, not just a
    chart impression.
 9. **Economic sensitivity** - estimated annual generation-opportunity-loss
-   and revenue sensitivity by cause, using **month-specific** average
-   generation rates rather than one blanket site-wide average, swept
-   across a range of assumed tariffs.
+   and revenue by cause, using **month-specific** average generation rates
+   rather than one blanket site-wide average, and the site's confirmed
+   contracted tariff (overridable to a sweep of other rates).
 
 ---
 
@@ -246,6 +247,10 @@ the complete set of files a full run produces:
 - `cause_season_breakdown.png` - stacked bar chart of classified cause of loss by season
 - `kruskal_generation_boxplot.png` - distribution of daily generation by calendar month
 - `kruskal_lull_boxplot.png` - distribution of daily lull hours by calendar month
+
+Sample PNGs from a real run are committed under `output/` so the figures
+below are viewable without running the pipeline yourself; the `.csv` files
+are regenerated fresh on every run and are not checked in.
 
 An example output figure: 
 
