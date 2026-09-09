@@ -119,8 +119,8 @@ python wind_turbine_loss_analysis.py --list
 ```
 
 Override the tariff used in the economic sensitivity analysis (defaults to
-the site's confirmed contracted tariff of ₹3.39/kWh; pass multiple values
-for a sensitivity sweep across rates):
+a tariff of ₹3.39/kWh; pass multiple values for a sensitivity sweep across
+rates):
 
 ```bash
 python wind_turbine_loss_analysis.py --tariff 4.5 5.5
