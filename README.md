@@ -146,26 +146,7 @@ wind-turbine-loss-analysis/
 ├── LICENSE
 ├── requirements.txt
 │
-├── data/
-│   └── turbine_daily_log.xls
-│
 └── output/
-    ├── monthly_loss_breakdown.csv
-    ├── loss_cause_summary.csv
-    ├── keyword_lexicon.csv
-    ├── seasonal_summary.csv
-    ├── export_balance_yearly.csv
-    ├── export_balance_flagged_days.csv
-    ├── yearly_productivity.csv
-    ├── reliability_summary.csv
-    ├── reliability_events_bd.csv
-    ├── reliability_events_gd.csv
-    ├── outage_clustering_summary.csv
-    ├── cause_season_contingency.csv
-    ├── cause_season_contingency_merged.csv
-    ├── cause_season_test_result.csv
-    ├── seasonal_significance_test.csv
-    ├── economic_sensitivity_by_cause.csv
     ├── monthly_hours_breakdown.png
     ├── loss_cause_attribution.png
     ├── seasonal_generation_and_lull.png
@@ -179,6 +160,10 @@ wind-turbine-loss-analysis/
     ├── kruskal_generation_boxplot.png
     └── kruskal_lull_boxplot.png
 ```
+
+The `output/` folder also fills up with the analysis's underlying `.csv`
+tables on every run; the full set is listed in [Generated Figures and
+Files](#generated-figures-and-files) below.
 
 ---
 
@@ -225,18 +210,27 @@ its own function in `wind_turbine_loss_analysis.py`:
 
 ## Generated Figures and Files
 
-Every analysis writes its tables and charts straight to `output/`. The
-full set is listed in [Repository Structure](#repository-structure) above;
-the core outputs are:
+Every analysis writes its tables and charts straight to `output/`. This is
+the complete set of files a full run produces:
 
 **CSVs**
 
+- `keyword_lexicon.csv` - full keyword-to-cause-category rule set used to classify remarks
 - `monthly_loss_breakdown.csv` - monthly Run/Grid-Down/Breakdown/Maintenance/Lull hour totals
 - `loss_cause_summary.csv` - days and lost hours attributed to each classified cause
 - `seasonal_summary.csv` - generation, lull hours, and lull share by calendar month
 - `export_balance_yearly.csv` - yearly generation vs. EB export meter totals and gap
 - `export_balance_flagged_days.csv` - days where the export/generation ratio falls outside a sane range
 - `yearly_productivity.csv` - year-over-year generation per run-hour
+- `reliability_events_bd.csv` - extracted discrete Breakdown downtime events with durations and gaps
+- `reliability_events_gd.csv` - extracted discrete Grid-Down downtime events with durations and gaps
+- `reliability_summary.csv` - MTBF, MTTR, and Weibull fit parameters with bootstrap confidence intervals, by category
+- `outage_clustering_summary.csv` - Kolmogorov-Smirnov statistics, asymptotic and Monte Carlo-corrected p-values, by category
+- `cause_season_contingency.csv` - six-category cause-of-loss by season contingency table
+- `cause_season_contingency_merged.csv` - merged five-category cause-of-loss by season contingency table
+- `cause_season_test_result.csv` - chi-square and permutation test results for cause versus season
+- `seasonal_significance_test.csv` - Kruskal-Wallis test results for daily generation and lull hours by month
+- `economic_sensitivity_by_cause.csv` - annualized generation-opportunity-loss and revenue estimate by cause
 
 **PNGs**
 
@@ -245,11 +239,18 @@ the core outputs are:
 - `seasonal_generation_and_lull.png` - generation and lull-hour share by calendar month
 - `generation_vs_export_balance.png` - generation vs. EB export reading, by year
 - `yearly_generation_intensity.png` - kWh generated per run-hour, by year
+- `reliability_weibull_bd.png` - Breakdown inter-failure gaps with the fitted Weibull curve overlaid
+- `reliability_weibull_gd.png` - Grid-Down inter-failure gaps with the fitted Weibull curve overlaid
+- `clustering_bd.png` - Breakdown inter-failure gaps against the fitted exponential (Poisson) null
+- `clustering_gd.png` - Grid-Down inter-failure gaps against the fitted exponential (Poisson) null
+- `cause_season_breakdown.png` - stacked bar chart of classified cause of loss by season
+- `kruskal_generation_boxplot.png` - distribution of daily generation by calendar month
+- `kruskal_lull_boxplot.png` - distribution of daily lull hours by calendar month
 
 An example output figure: 
 
 <p align="center">
-  <img src="screenshots/monthly_hours_breakdown.png" alt="Monthly Hours Breakdown" width="850">
+  <img src="output/monthly_hours_breakdown.png" alt="Monthly Hours Breakdown" width="850">
 </p>
 
 ---
