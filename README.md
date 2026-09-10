@@ -1,6 +1,6 @@
 # wind-turbine-loss-analysis
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.PLACEHOLDER.svg)](https://doi.org/10.5281/zenodo.PLACEHOLDER)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22684376.svg)](https://doi.org/10.5281/zenodo.22684376)
 ![Python](https://img.shields.io/badge/Python-3.9+-blue)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
@@ -291,5 +291,5 @@ Operational Logs: A Single-Turbine Case Study.
 
 Zenodo.
 
-https://doi.org/10.5281/zenodo.PLACEHOLDER
+https://doi.org/10.5281/zenodo.22684376
 ```
